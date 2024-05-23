@@ -17,6 +17,11 @@ const DebtSchema = new mongoose.Schema({
   date: {
     type: String,
     require: true
+  },
+  owner: {
+    type: String,
+    default: 'admin',
+    require: true
   }
 
 });

@@ -1,7 +1,7 @@
 export interface User {
   _id?:         string;
   enable?:      boolean;
-  name?:        string;
+  username?:    string;
   password?:    string;
   role?:        string;
 }
