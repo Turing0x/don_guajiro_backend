@@ -1,19 +1,18 @@
 import { Response, Request } from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 import { sendRes } from '../../../helpers/send.res';
-import { Product } from '../interface/product.interface';
-import { ProductModel } from '../models/product.model';
+import { DebtModel } from '../models/debts.model';
+import { Debt } from '../interface/debts.interface';
 
-export class ProductsControllers {
+export class DebtsControllers {
 
-  static async getAllProducts (req: Request, res: Response) {
+  static async getAllDebts (req: Request, res: Response) {
 
     try {
-      const products = await ProductModel.find()
-        .populate(['measure_unit', 'clasification', 'concept'])
-        .lean();;
-      return sendRes(res, 200, true, 'Datos Obtenidos', products)
-      ;
+      const debts = await DebtModel.find().lean();
+      return sendRes(res, 200, true, 'Datos Obtenidos', debts);
     } catch (error) { 
       if (error instanceof Error) {
         return sendRes(res, 500, false, 'Error Grave', error.message); 
@@ -24,22 +23,20 @@ export class ProductsControllers {
 
   }
 
-  static async getProductsById (req: Request, res: Response) {
+  static async getDebtsById (req: Request, res: Response) {
 
     try {
 
-      const { clientId } = req.params;
-      if (!clientId) return sendRes(res,
+      const { id } = req.params;
+      if (!id) return sendRes(res,
         500,
         false,
         'Error Grave', ''); 
     
-      const user = await ProductModel.findById(clientId)
-        .populate(['measure_unit', 'clasification', 'concept'])
-        .lean();
-      if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
+      const debt = await DebtModel.findById(id);
+      if (!debt) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
       
-      return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
+      return sendRes(res, 500, false, 'Resultado de la búsqueda', debt); 
       
     } catch (error) { 
       if (error instanceof Error) {
@@ -51,17 +48,14 @@ export class ProductsControllers {
 
   }
 
-  static async saveProduct(req: Request, res: Response) {
+  static async saveDebt(req: Request, res: Response) {
   
     try {
 
-      const data: Product = req.body;
-      
-        const prod = new ProductModel(data);
-        await prod.save();
-        
-      
+      const data: Debt = req.body;
 
+      const debt = new DebtModel(data);
+      await debt.save();
       return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
       
     } catch (error) {
@@ -70,14 +64,14 @@ export class ProductsControllers {
 
   }
 
-  static async deleteProduct (req: Request, res: Response) {
+  static async deleteDebt (req: Request, res: Response) {
 
     try {
       
       const { id } = req.params;
       if( !id ) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
     
-      await ProductModel.deleteOne({ _id: id })
+      await DebtModel.deleteOne({ _id: id })
       return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
 
     } catch (error) { 

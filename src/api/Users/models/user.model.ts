@@ -17,11 +17,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'client',
-  },
-  email: {
-    type: String,
-    require: true
+    default: 'guest',
   }
 
 });

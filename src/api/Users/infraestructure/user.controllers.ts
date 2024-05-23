@@ -53,10 +53,10 @@ export class UsersControllers {
     try {
 
       const data: User = req.body;
-      const exist = await UserModel.findOne({ email: data.email })
+      const exist = await UserModel.findOne({ email: data.name })
 
       if (exist) {
-        return sendRes(res, 401, false, 'Ya existe ese correo en nuestro sistema', '');
+        return sendRes(res, 401, false, 'Ya existe ese nombre en nuestro sistema', '');
       }
 
       const hashPassword = bcrypt.hashSync(data.password!, 10);
@@ -89,7 +89,6 @@ export class UsersControllers {
         401,
         false,
         'Contraseña incorrecta', '');
-
     
       const token = jwt.sign(
         {

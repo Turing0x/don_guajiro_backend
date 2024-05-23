@@ -30,7 +30,7 @@ export class ExpressServer {
     )
   }
 
-  conectDB() { dbConnection() }
+  async conectDB () { await dbConnection() }
 
   middlewares () {
     this.app.use(cors())
