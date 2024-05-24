@@ -38,7 +38,7 @@ class DebtsControllers {
                     return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
                 const debt = yield debts_model_1.DebtModel.findById(id);
                 if (!debt)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Usuario no encontrado', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Operación no encontrada', '');
                 return (0, send_res_1.sendRes)(res, 200, false, 'Resultado de la búsqueda', debt);
             }
             catch (error) {
@@ -66,11 +66,11 @@ class DebtsControllers {
                         date: (_e = data.date) !== null && _e !== void 0 ? _e : existingDebt.date,
                     });
                     yield debts_model_1.DebtModel.findByIdAndUpdate(data._id, newData, { new: true });
-                    return (0, send_res_1.sendRes)(res, 200, true, 'Usuario Creado Exitosamente', '');
+                    return (0, send_res_1.sendRes)(res, 200, true, 'Operación Editada Exitosamente', '');
                 }
                 const debt = new debts_model_1.DebtModel(data);
                 yield debt.save();
-                return (0, send_res_1.sendRes)(res, 200, true, 'Usuario Creado Exitosamente', '');
+                return (0, send_res_1.sendRes)(res, 200, true, 'Operación Creada Exitosamente', '');
             }
             catch (error) {
                 return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error);
@@ -82,9 +82,9 @@ class DebtsControllers {
             try {
                 const { id } = req.params;
                 if (!id)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Usuario no encontrado', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Operación no encontrada', '');
                 yield debts_model_1.DebtModel.deleteOne({ _id: id });
-                return (0, send_res_1.sendRes)(res, 200, true, 'Usuario Eliminado Correctamente', '');
+                return (0, send_res_1.sendRes)(res, 200, true, 'Operación Eliminada Correctamente', '');
             }
             catch (error) {
                 if (error instanceof Error) {

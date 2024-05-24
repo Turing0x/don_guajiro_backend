@@ -91,9 +91,9 @@ class SalesControllers {
             try {
                 const { id } = req.params;
                 if (!id)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Usuario no encontrado', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Operación no encontrada', '');
                 yield sales_model_1.SalesModel.deleteOne({ _id: id });
-                return (0, send_res_1.sendRes)(res, 200, true, 'Usuario Eliminado Correctamente', '');
+                return (0, send_res_1.sendRes)(res, 200, true, 'Operación Eliminada Correctamente', '');
             }
             catch (error) {
                 if (error instanceof Error) {

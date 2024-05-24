@@ -100,10 +100,10 @@ export class SalesControllers {
     try {
       
       const { id } = req.params;
-      if( !id ) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
+      if( !id ) return sendRes(res, 200, false, 'Operación no encontrada', ''); 
     
       await SalesModel.deleteOne({ _id: id })
-      return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
+      return sendRes(res, 200, true, 'Operación Eliminada Correctamente', '');
 
     } catch (error) { 
       if (error instanceof Error) {

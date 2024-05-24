@@ -33,7 +33,7 @@ export class DebtsControllers {
         'Error Grave', ''); 
     
       const debt = await DebtModel.findById(id);
-      if (!debt) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
+      if (!debt) return sendRes(res, 200, false, 'Operación no encontrada', ''); 
       
       return sendRes(res, 200, false, 'Resultado de la búsqueda', debt); 
       
@@ -62,12 +62,12 @@ export class DebtsControllers {
           date: data.date ?? existingDebt!.date,
         });
         await DebtModel.findByIdAndUpdate(data._id, newData, { new: true });
-        return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
+        return sendRes(res, 200, true, 'Operación Editada Exitosamente', '');
       }
 
       const debt = new DebtModel(data);
       await debt.save();
-      return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
+      return sendRes(res, 200, true, 'Operación Creada Exitosamente', '');
       
     } catch (error) {
       return sendRes(res, 200, false, 'Ha ocurrido algo grave', error);
@@ -80,10 +80,10 @@ export class DebtsControllers {
     try {
       
       const { id } = req.params;
-      if( !id ) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
+      if( !id ) return sendRes(res, 200, false, 'Operación no encontrada', ''); 
     
       await DebtModel.deleteOne({ _id: id })
-      return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
+      return sendRes(res, 200, true, 'Operación Eliminada Correctamente', '');
 
     } catch (error) { 
       if (error instanceof Error) {
