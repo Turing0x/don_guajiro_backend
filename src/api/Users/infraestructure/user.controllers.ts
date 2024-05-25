@@ -15,9 +15,9 @@ export class UsersControllers {
       return sendRes(res, 200, true, 'Datos Obtenidos', users);
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'Error Grave', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'Error Grave', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
@@ -31,7 +31,7 @@ export class UsersControllers {
       if (!clientId) return sendRes(res,
         200,
         false,
-        'Error Grave', ''); 
+        'Ha ocurrido algo grave', ''); 
     
       const user = await UserModel.findById(clientId);
       if (!user) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
@@ -40,9 +40,9 @@ export class UsersControllers {
       
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'mess_0', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'mess_0', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
@@ -109,7 +109,7 @@ export class UsersControllers {
         token,
       });
       
-    } catch (error) { return sendRes(res, 200, false, 'mess_0', ''); }
+    } catch (error) { return sendRes(res, 200, false, 'Ha ocurrido algo grave', ''); }
 
   }
 
@@ -125,9 +125,9 @@ export class UsersControllers {
 
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'Error Interno', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'Error Interno', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
@@ -145,7 +145,7 @@ export class UsersControllers {
       return sendRes(res, 200, true, 'Usuario Editado', '');
 
     } catch (error) {
-      return sendRes(res, 200, false, 'Error Interno', '');
+      return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
     }
   }
 

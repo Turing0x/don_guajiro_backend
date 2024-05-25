@@ -14,9 +14,9 @@ export class DebtsControllers {
       return sendRes(res, 200, true, 'Datos Obtenidos', debts);
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'Error Grave', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'Error Grave', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
@@ -30,7 +30,7 @@ export class DebtsControllers {
       if (!id) return sendRes(res,
         200,
         false,
-        'Error Grave', ''); 
+        'Ha ocurrido algo grave', ''); 
     
       const debt = await DebtModel.findById(id);
       if (!debt) return sendRes(res, 200, false, 'Operación no encontrada', ''); 
@@ -39,9 +39,9 @@ export class DebtsControllers {
       
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'mess_0', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'mess_0', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
@@ -87,9 +87,9 @@ export class DebtsControllers {
 
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'Error Interno', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'Error Interno', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 

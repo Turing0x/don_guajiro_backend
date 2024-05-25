@@ -24,9 +24,9 @@ export class SalesControllers {
     
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'Error Grave', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'Error Grave', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
@@ -40,7 +40,7 @@ export class SalesControllers {
       if (!id) return sendRes(res,
         200,
         false,
-        'Error Grave', ''); 
+        'Ha ocurrido algo grave', ''); 
     
       const debt = await SalesModel.findById(id);
       if (!debt) return sendRes(res, 200, false, 'Venta no encontrado', ''); 
@@ -49,9 +49,9 @@ export class SalesControllers {
       
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'mess_0', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'mess_0', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
@@ -80,10 +80,10 @@ export class SalesControllers {
       if (!id) return sendRes(res,
         200,
         false,
-        'Error Grave', ''); 
+        'Ha ocurrido algo grave', ''); 
     
       const debt = await SalesModel.findById(id);
-      if (!debt) return sendRes(res, 200, false, 'Venta no encontrado', ''); 
+      if (!debt) return sendRes(res, 200, false, 'Venta no encontrada', ''); 
       
       debt.finished = true;
       await debt.save();
@@ -103,13 +103,13 @@ export class SalesControllers {
       if( !id ) return sendRes(res, 200, false, 'Operación no encontrada', ''); 
     
       await SalesModel.deleteOne({ _id: id })
-      return sendRes(res, 200, true, 'Operación Eliminada Correctamente', '');
+      return sendRes(res, 200, true, 'Venta Eliminada Correctamente', '');
 
     } catch (error) { 
       if (error instanceof Error) {
-        return sendRes(res, 200, false, 'Error Interno', error.message); 
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
-        return sendRes(res, 200, false, 'Error Interno', '');
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
       }
     }
 
