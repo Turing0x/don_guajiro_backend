@@ -1,9 +1,10 @@
 import { Product } from "../../Product/models/product.model"
+import { User } from "../../Users/interface/user.interface";
 
 export type Order = {
   _id: string;
-  date: boolean;
+  date: string;
   product_list: Product[];
-  total_amount: string;
-  seller: string;
+  total_amount: number;
+  seller: User;
 }
