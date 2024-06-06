@@ -3,18 +3,34 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { sendRes } from '../../../helpers/send.res';
-import { User } from '../interface/user.interface';
 import { UserModel } from '../models/user.model';
+import { User } from '../interface/user.interface';
 
 export class UsersControllers {
 
   static async getAllUsers (req: Request, res: Response) {
 
     try {
-      const users = await UserModel.find().lean();
+      const users = await UserModel.find().select('-password').lean();
       return sendRes(res, 200, true, 'Datos Obtenidos', users);
     } catch (error) { 
-      if (error instanceof Error) {
+      if (error instanceof Error) {1
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
+      } else {
+        return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
+      }
+    }
+
+  }
+
+  static async getAllSeller (req: Request, res: Response) {
+
+    try {
+      const users = await UserModel.find({ role: 'seller' })
+        .select('-password').lean();
+      return sendRes(res, 200, true, 'Datos Obtenidos', users);
+    } catch (error) { 
+      if (error instanceof Error) {1
         return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
       } else {
         return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
@@ -33,7 +49,7 @@ export class UsersControllers {
         false,
         'Ha ocurrido algo grave', ''); 
     
-      const user = await UserModel.findById(clientId);
+      const user = await UserModel.findById(clientId).select('-password');
       if (!user) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
       
       return sendRes(res, 200, false, 'Resultado de la búsqueda', user); 

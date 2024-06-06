@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { ProductModel } from '../../Product/domain/product.models';
 
 const OrderSchema = new mongoose.Schema({
 
@@ -7,16 +6,13 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  product_list: {
-    type: Array,
+  product: {
+    type: Object,
     require: true
   },
-  total_amount: {
-    type: Number,
-    require: false
-  },
   seller: {
-    type: Object,
+    type: mongoose.Types.ObjectId,
+    ref: 'users',
     require: true,
   }
 

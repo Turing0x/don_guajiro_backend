@@ -4,17 +4,27 @@ import { OrderModel } from '../domain/order.models';
 import { ProductModel } from '../../Product/domain/product.models';
 import { sendRes } from '../../../helpers/send.res';
 import { Order } from '../models/order.model';
-import { Product } from '../../Product/models/product.model';
 
 async function getAllOrders(req: Request, res: Response) {
   try {
 
-    const { date } = req.params
-    const orders = await OrderModel.find({ date });
+    const { date } = req.query
+    const orders = await OrderModel.find({ date })
+      .populate('seller').lean();
+    
+    for (const order of orders) {
+      const prod = await ProductModel.findById(order.product.id);
+      if (prod) {
+        order.product = prod;
+      }
+    }
     
     return sendRes(res, 200, true, 'Resultado de la búsqueda', orders);
 
-  } catch (error) { return sendRes(res, 200, false, 'Ha ocurrido algo grave', ''); }
+  } catch (error) {
+    console.log(error);
+    return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
+  }
 }
 
 async function getAllRequested(req: Request, res: Response) {
@@ -64,9 +74,12 @@ async function getDailyResume(req: Request, res: Response) {
     const map = new Map()
     const list = []
 
-    const orders = await OrderModel.find({ date });
-    orders.forEach(order => {
-      for (const prod of order.product_list) {
+    const orders = await OrderModel.find({ date })
+      .populate('product').lean();
+    orders.forEach( async(order) => {
+
+      const prod = await ProductModel.findById(order.product);
+      if (prod) {
         if (!map.has(prod._id)) {
           prod.cantToBuy = 1;
           map.set(prod._id, prod);
@@ -76,6 +89,7 @@ async function getDailyResume(req: Request, res: Response) {
           map.set(prod._id, prod);
         }
       }
+      
     });
 
     for (const val of map.values()) {
@@ -97,7 +111,9 @@ async function saveOrder(req: Request, res: Response) {
     const Order = new OrderModel(order);
 
     await Order.save();
-    await subtractStockOfProducts(order.product_list);
+    await subtractStockOfProducts(order.product.id);
+
+    return sendRes(res, 200, true, 'Venta registrada', '');
     
   } catch (error) { return sendRes(res, 200, false, 'Ha ocurrido algo grave', ''); }
 
@@ -111,7 +127,7 @@ async function deleteOrderById(req: Request, res: Response) {
     if( !orderId ) return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');; 
 
     const getter = await OrderModel.findById(orderId);
-    await addStockOfProducts(getter!.product_list)
+    await addStockOfProducts(String(getter!.product['id']))
     await OrderModel.deleteOne({_id: orderId});
     
     
@@ -119,25 +135,21 @@ async function deleteOrderById(req: Request, res: Response) {
 
 }
 
-async function subtractStockOfProducts(product_list: Product[]) {
-  for (const product of product_list) {
-    const getter = await ProductModel.findById(product['_id']);
-    if (getter) {
-      await ProductModel.findByIdAndUpdate(product['_id'],
-        { $set: { inStock: getter!.inStock! - product['cantToBuy'] } },
-      );
-    } 
-  }
+async function subtractStockOfProducts(id: string) {
+  const getter = await ProductModel.findById(id);
+  if (getter) {
+    await ProductModel.findByIdAndUpdate(getter._id,
+      { $set: { inStock: getter!.inStock! - getter.cantToBuy! } },
+    );
+  } 
 }
 
-async function addStockOfProducts(product_list: Product[]) {
-  for (const product of product_list) {
-    const getter = await ProductModel.findById(product['_id']);
-    if (getter) {
-      await ProductModel.findByIdAndUpdate(product['_id'],
-        { $set: { inStock: getter!.inStock! + product['cantToBuy'] } },
-      );
-    }
+async function addStockOfProducts(id: string) {
+  const getter = await ProductModel.findById(id);
+  if (getter) {
+    await ProductModel.findByIdAndUpdate(getter._id,
+      { $set: { inStock: getter!.inStock! + getter.cantToBuy! } },
+    );
   }
 }
 

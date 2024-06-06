@@ -6,7 +6,8 @@ const router = Router()
 
 router
 
-  .get('/:date', OrderControllers.getAllOrders)
+  .get('/', OrderControllers.getAllOrders)
+  
   .get('/getById/:orderId', OrderControllers.getOrderById)
   .get('/pending/:date', OrderControllers.getAllRequested)
   .get('/getDaily/:date', OrderControllers.getDailyResume)
@@ -16,4 +17,6 @@ router
 
   .delete('/:orderId', OrderControllers.deleteOrderById)
 
+
 export const OrderRouter = router
+

@@ -7,6 +7,7 @@ const router = Router()
 router
 
   .get('/', UsersControllers.getAllUsers)
+  .get('/sellers', UsersControllers.getAllSeller)
 
   .get('/:id', UsersControllers.getUsersById)
 
