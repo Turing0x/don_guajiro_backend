@@ -22,10 +22,10 @@ class DebtsControllers {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });
@@ -35,7 +35,7 @@ class DebtsControllers {
             try {
                 const { id } = req.params;
                 if (!id)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 const debt = yield debts_model_1.DebtModel.findById(id);
                 if (!debt)
                     return (0, send_res_1.sendRes)(res, 200, false, 'Operación no encontrada', '');
@@ -43,10 +43,10 @@ class DebtsControllers {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'mess_0', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'mess_0', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });
@@ -88,10 +88,10 @@ class DebtsControllers {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Interno', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Interno', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });

@@ -26,10 +26,10 @@ class SalesControllers {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });
@@ -39,7 +39,7 @@ class SalesControllers {
             try {
                 const { id } = req.params;
                 if (!id)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 const debt = yield sales_model_1.SalesModel.findById(id);
                 if (!debt)
                     return (0, send_res_1.sendRes)(res, 200, false, 'Venta no encontrado', '');
@@ -47,10 +47,10 @@ class SalesControllers {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'mess_0', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'mess_0', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });
@@ -73,10 +73,10 @@ class SalesControllers {
             try {
                 const { id } = req.params;
                 if (!id)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 const debt = yield sales_model_1.SalesModel.findById(id);
                 if (!debt)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Venta no encontrado', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Venta no encontrada', '');
                 debt.finished = true;
                 yield debt.save();
                 return (0, send_res_1.sendRes)(res, 200, true, 'Venta Registrada Exitosamente', '');
@@ -93,14 +93,14 @@ class SalesControllers {
                 if (!id)
                     return (0, send_res_1.sendRes)(res, 200, false, 'Operación no encontrada', '');
                 yield sales_model_1.SalesModel.deleteOne({ _id: id });
-                return (0, send_res_1.sendRes)(res, 200, true, 'Operación Eliminada Correctamente', '');
+                return (0, send_res_1.sendRes)(res, 200, true, 'Venta Eliminada Correctamente', '');
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Interno', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Interno', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });

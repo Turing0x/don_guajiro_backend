@@ -21,15 +21,34 @@ class UsersControllers {
     static getAllUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const users = yield user_model_1.UserModel.find().lean();
+                const users = yield user_model_1.UserModel.find().select('-password').lean();
                 return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', users);
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', error.message);
+                    1;
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
+                }
+            }
+        });
+    }
+    static getAllSeller(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const users = yield user_model_1.UserModel.find({ role: 'seller' })
+                    .select('-password').lean();
+                return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', users);
+            }
+            catch (error) {
+                if (error instanceof Error) {
+                    1;
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
+                }
+                else {
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });
@@ -39,18 +58,18 @@ class UsersControllers {
             try {
                 const { clientId } = req.params;
                 if (!clientId)
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Grave', '');
-                const user = yield user_model_1.UserModel.findById(clientId);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
+                const user = yield user_model_1.UserModel.findById(clientId).select('-password');
                 if (!user)
                     return (0, send_res_1.sendRes)(res, 200, false, 'Usuario no encontrado', '');
                 return (0, send_res_1.sendRes)(res, 200, false, 'Resultado de la búsqueda', user);
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'mess_0', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'mess_0', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });
@@ -100,7 +119,7 @@ class UsersControllers {
                 });
             }
             catch (error) {
-                return (0, send_res_1.sendRes)(res, 200, false, 'mess_0', '');
+                return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
             }
         });
     }
@@ -115,10 +134,10 @@ class UsersControllers {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Interno', error.message);
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
                 }
                 else {
-                    return (0, send_res_1.sendRes)(res, 200, false, 'Error Interno', '');
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
                 }
             }
         });
@@ -133,7 +152,7 @@ class UsersControllers {
                 return (0, send_res_1.sendRes)(res, 200, true, 'Usuario Editado', '');
             }
             catch (error) {
-                return (0, send_res_1.sendRes)(res, 200, false, 'Error Interno', '');
+                return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
             }
         });
     }

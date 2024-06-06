@@ -6,6 +6,7 @@ const user_controllers_1 = require("../infraestructure/user.controllers");
 const router = (0, express_1.Router)();
 router
     .get('/', user_controllers_1.UsersControllers.getAllUsers)
+    .get('/sellers', user_controllers_1.UsersControllers.getAllSeller)
     .get('/:id', user_controllers_1.UsersControllers.getUsersById)
     .post('/', user_controllers_1.UsersControllers.saveUser)
     .post('/signIn', user_controllers_1.UsersControllers.sign)
