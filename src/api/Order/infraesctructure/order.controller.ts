@@ -4,25 +4,52 @@ import { OrderModel } from '../domain/order.models';
 import { ProductModel } from '../../Product/domain/product.models';
 import { sendRes } from '../../../helpers/send.res';
 import { Order } from '../models/order.model';
+import { UserModel } from '../../Users/models/user.model';
 
 async function getAllOrders(req: Request, res: Response) {
   try {
 
-    const { date } = req.query
-    const orders = await OrderModel.find({ date })
-      .populate('seller').lean();
+    const { date, userId } = req.query;
+
+    const user = await UserModel.findById(userId);
+    if (!user) return sendRes(res, 200, false, 'El usuario no existe', '');
+
+    if ( user.role === 'seller' ) {
+
+      const orders = await OrderModel.find(
+        { $and: [{ date }, { seller: userId }] })
+        .populate('seller').lean();
     
-    for (const order of orders) {
-      const prod = await ProductModel.findById(order.product.id);
-      if (prod) {
-        order.product = prod;
+      for (const order of orders) {
+        const prod = await ProductModel.findById(order.product.id);
+        if (prod) {
+          const cantToBuy = order.product.cantToBuy;
+          prod.cantToBuy = cantToBuy;
+          order.product = prod;
+        }
       }
-    }
+
+      return sendRes(res, 200, true, 'Resultado de la búsqueda', orders);
+      
+    } else {
+
+      const orders = await OrderModel.find({ date })
+        .populate('seller').lean();
     
-    return sendRes(res, 200, true, 'Resultado de la búsqueda', orders);
+      for (const order of orders) {
+        const prod = await ProductModel.findById(order.product.id);
+        if (prod) {
+          const cantToBuy = order.product.cantToBuy;
+          prod.cantToBuy = cantToBuy;
+          order.product = prod;
+        }
+      }
+
+      return sendRes(res, 200, true, 'Resultado de la búsqueda', orders);
+
+    }
 
   } catch (error) {
-    console.log(error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
   }
 }
