@@ -129,6 +129,38 @@ export class UsersControllers {
 
   }
 
+  
+  static async tokenVerify(req: Request, res: Response) {
+  
+    try {
+
+      const { token } = req.params;
+
+      if( !token ) return sendRes(res, 400, false, 'No se ha enviado el token', '');
+      const decoded = jwt.verify(token, process.env.JWT_KEY_APP!) as { username: string }
+
+      const user = await UserModel.findOne({ username: decoded['username'] });
+      const newToken = jwt.sign(
+        { username: user!.username, user_id: user!._id, status: user!.enable },
+        process.env.JWT_KEY_APP!,
+        { expiresIn: '1d' }
+      )
+
+      return sendRes(res, 200, true, 'todo ok', {
+        user: {
+          userID: user!._id,
+          role: user!.role.toLocaleLowerCase()
+        },
+        token: newToken,
+      });
+
+    } catch (error) { 
+      console.log(error)
+      
+      return sendRes(res, 400, false, 'Ha ocurrido algo grave', ''); }
+
+  }
+
   static async deleteUser (req: Request, res: Response) {
 
     try {

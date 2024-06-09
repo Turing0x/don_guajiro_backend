@@ -15,6 +15,7 @@ router
   .post('/signIn', UsersControllers.sign)
 
   .post('/changeActive', UsersControllers.changeActive)
+  .post('/checkToken/:token', UsersControllers.tokenVerify)
 
   .delete('/:id', UsersControllers.deleteUser)
 

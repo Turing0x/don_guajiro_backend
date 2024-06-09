@@ -1,13 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const DebtSchema = new mongoose.Schema({
 
   type: {
-    type: String,
+    type: mongoose.Types.ObjectId,
+    ref:'debtsTypes',
     require: true
   },
   money: {
-    type: String,
+    type: Number,
     require: true
   },
   description: {
@@ -19,8 +20,8 @@ const DebtSchema = new mongoose.Schema({
     require: true
   },
   owner: {
-    type: String,
-    default: 'admin',
+    type: mongoose.Types.ObjectId,
+    ref:'users',
     require: true
   }
 
