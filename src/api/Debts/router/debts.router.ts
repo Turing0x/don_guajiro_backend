@@ -10,7 +10,7 @@ router
 
   .get('/:id', DebtsControllers.getDebtsById)
 
-  .post('/', DebtsControllers.saveDebt)
+  .post('/:token', DebtsControllers.saveDebt)
 
   .delete('/:id', DebtsControllers.deleteDebt)
 

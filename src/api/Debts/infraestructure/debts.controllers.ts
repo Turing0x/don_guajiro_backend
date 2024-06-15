@@ -3,6 +3,9 @@ import { Response, Request } from 'express';
 import { sendRes } from '../../../helpers/send.res';
 import { DebtModel } from '../models/debts.model';
 import { Debt } from '../interface/debts.interface';
+import jwt from 'jsonwebtoken';
+import { UserModel } from '../../Users/models/user.model';
+
 
 export class DebtsControllers {
 
@@ -10,8 +13,14 @@ export class DebtsControllers {
 
     try {
       const { date } = req.query;
-      const debts = await DebtModel.find({date}).lean();
-      return sendRes(res, 200, true, 'Datos Obtenidos', debts);
+      if( date ) {
+        const debts = await DebtModel.find({date}).lean().populate('type');
+        return sendRes(res, 200, true, 'Datos Obtenidos', debts);
+      }
+      else {
+        const debts = await DebtModel.find().populate('type');
+        return sendRes(res, 200, true, 'Datos Obtenidos', debts);
+      }
     } catch (error) { 
       if (error instanceof Error) {
         return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
@@ -48,6 +57,14 @@ export class DebtsControllers {
   }
 
   static async saveDebt(req: Request, res: Response) {
+
+    const { token } = req.params;
+
+    if( !token ) return sendRes(res, 400, false, 'No se ha enviado el token', '');
+    const decoded = jwt.verify(token, process.env.JWT_KEY_APP!) as { user_id: string }
+
+    const user = await UserModel.findById( decoded['user_id'] );
+
   
     try {
 
@@ -65,7 +82,10 @@ export class DebtsControllers {
         return sendRes(res, 200, true, 'Operación Editada Exitosamente', '');
       }
 
-      const debt = new DebtModel(data);
+      const debt = new DebtModel({
+        ...data,
+        owner:decoded['user_id']
+      });
       await debt.save();
       return sendRes(res, 200, true, 'Operación Creada Exitosamente', '');
       
