@@ -24,10 +24,17 @@ export class DebtsTypeControllers {
 
         try {
             let { name } = req.body;
+            if( !name || name === '')  return sendRes(res, 200, false, 'Rellene el campo', '');
             name = name.toLowerCase();
 
-            const debt = await DebtTypeModel.findOne({ name });
-            if (debt) return sendRes(res, 400, false, 'Ya existe este nombre', '');
+            const debt = await DebtTypeModel.findOne({ name , status: true });
+            const debts2 = await DebtTypeModel.findOne({ name , status: false });
+            if (debt) return sendRes(res, 200, false, 'Ya existe este nombre', '');
+            else if (debts2) {
+                console.log('pedro');
+                
+                return sendRes(res, 200, true, 'Datos Obtenidos', await DebtTypeModel.findByIdAndUpdate(debts2._id , {status: true},{ new: true }) ); 
+            }
 
             const debtsType = await DebtTypeModel.create({ name, status: true })
             return sendRes(res, 200, true, 'Datos Obtenidos', debtsType);
@@ -40,4 +47,22 @@ export class DebtsTypeControllers {
         }
 
     }
+
+    static async deleteDebtsType(req: Request, res: Response) {
+        console.log('epepepepeep');
+        
+
+        try {
+            await DebtTypeModel.findByIdAndUpdate(req.params.id , {status: false},{ new: true });
+        return sendRes(res, 200, true, 'Operación Eliminada Exitosamente', '');
+        } catch (error) {
+            if (error instanceof Error) {
+                return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message);
+            } else {
+                return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
+            }
+        }
+
+    }
+
 }

@@ -7,5 +7,7 @@ const router = Router()
 router
     .get('/' , DebtsTypeControllers.getAllDebtsType)
     .post('/', DebtsTypeControllers.SaveDebtsType)
+    .delete('/:id', DebtsTypeControllers.deleteDebtsType)
+
 
 export const DebtsTypeRouter = router

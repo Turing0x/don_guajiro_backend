@@ -6,6 +6,8 @@ const router = Router()
 
 router
 
+  .get('/pendingAll/:pending', SalesControllers.getAllSalesPending)
+
   .get('/', SalesControllers.getAllSales)
 
   .get('/:id', SalesControllers.getSalesById)
