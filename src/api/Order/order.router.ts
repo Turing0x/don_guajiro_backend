@@ -1,21 +1,22 @@
 import { Router } from 'express';
 
 import { OrderControllers } from './infraesctructure/order.controller';
+import { checkAuth } from '../../helpers/checkAuth';
 
 const router = Router()
 
 router
 
-  .get('/', OrderControllers.getAllOrders)
+  .get('/', checkAuth, OrderControllers.getAllOrders)
   
-  .get('/getById/:orderId', OrderControllers.getOrderById)
-  .get('/pending/:date', OrderControllers.getAllRequested)
-  .get('/getDaily/:date', OrderControllers.getDailyResume)
-  .get('/getByCommOrder/:commercialCode/:date', OrderControllers.getOrdersByCommercial)
+  .get('/getById/:orderId', checkAuth, OrderControllers.getOrderById)
+  .get('/pending/:date', checkAuth, OrderControllers.getAllRequested)
+  .get('/getDaily/:date', checkAuth, OrderControllers.getDailyResume)
+  .get('/getByCommOrder/:commercialCode/:date', checkAuth, OrderControllers.getOrdersByCommercial)
 
-  .post('/', OrderControllers.saveOrder)
+  .post('/', checkAuth, OrderControllers.saveOrder)
 
-  .delete('/:orderId', OrderControllers.deleteOrderById)
+  .delete('/:orderId', checkAuth, OrderControllers.deleteOrderById)
 
 
 export const OrderRouter = router

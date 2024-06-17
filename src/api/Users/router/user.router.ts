@@ -1,22 +1,23 @@
 import { Router } from "express"
 
 import { UsersControllers } from '../infraestructure/user.controllers';
+import { checkAuth } from "../../../helpers/checkAuth";
 
 const router = Router()
 
 router
 
-  .get('/', UsersControllers.getAllUsers)
-  .get('/sellers', UsersControllers.getAllSeller)
+  .get('/', checkAuth, UsersControllers.getAllUsers)
+  .get('/sellers', checkAuth, UsersControllers.getAllSeller)
 
-  .get('/:id', UsersControllers.getUsersById)
+  .get('/:id', checkAuth, UsersControllers.getUsersById)
 
-  .post('/', UsersControllers.saveUser)
+  .post('/', checkAuth, UsersControllers.saveUser)
   .post('/signIn', UsersControllers.sign)
 
-  .post('/changeActive', UsersControllers.changeActive)
-  .post('/checkToken/:token', UsersControllers.tokenVerify)
+  .post('/changeActive', checkAuth, UsersControllers.changeActive)
+  .post('/checkToken/:token', checkAuth, UsersControllers.tokenVerify)
 
-  .delete('/:id', UsersControllers.deleteUser)
+  .delete('/:id', checkAuth, UsersControllers.deleteUser)
 
 export const UsersRouter = router

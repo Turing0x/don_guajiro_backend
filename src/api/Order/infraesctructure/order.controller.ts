@@ -154,7 +154,7 @@ async function deleteOrderById(req: Request, res: Response) {
     if( !orderId ) return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');; 
 
     const getter = await OrderModel.findById(orderId);
-    await addStockOfProducts(String(getter!.product['id']))
+    await addStockOfProducts(String(getter?.product['id']))
     await OrderModel.deleteOne({_id: orderId});
     
     
@@ -166,7 +166,7 @@ async function subtractStockOfProducts(id: string) {
   const getter = await ProductModel.findById(id);
   if (getter) {
     await ProductModel.findByIdAndUpdate(getter._id,
-      { $set: { inStock: getter!.inStock! - getter.cantToBuy! } },
+      { $set: { inStock: (getter.inStock || 0) - (getter.cantToBuy || 0) } },
     );
   } 
 }
@@ -175,7 +175,7 @@ async function addStockOfProducts(id: string) {
   const getter = await ProductModel.findById(id);
   if (getter) {
     await ProductModel.findByIdAndUpdate(getter._id,
-      { $set: { inStock: getter!.inStock! + getter.cantToBuy! } },
+      { $set: { inStock: (getter.inStock || 0) + (getter.cantToBuy || 0) } },
     );
   }
 }

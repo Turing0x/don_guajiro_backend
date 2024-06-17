@@ -1,17 +1,18 @@
 import { Router } from "express"
 
 import { DebtsControllers } from '../infraestructure/debts.controllers';
+import { checkAuth } from "../../../helpers/checkAuth";
 
 const router = Router()
 
 router
 
-  .get('/', DebtsControllers.getAllDebts)
+  .get('/', checkAuth, DebtsControllers.getAllDebts)
 
-  .get('/:id', DebtsControllers.getDebtsById)
+  .get('/:id', checkAuth, DebtsControllers.getDebtsById)
 
-  .post('/:token', DebtsControllers.saveDebt)
+  .post('/', checkAuth, DebtsControllers.saveDebt)
 
-  .delete('/:id', DebtsControllers.deleteDebt)
+  .delete('/:id', checkAuth, DebtsControllers.deleteDebt)
 
 export const DebtsRouter = router
