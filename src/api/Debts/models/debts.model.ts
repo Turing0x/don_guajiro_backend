@@ -18,11 +18,6 @@ const DebtSchema = new mongoose.Schema({
   date: {
     type: String,
     require: true
-  },
-  owner: {
-    type: mongoose.Types.ObjectId,
-    ref: 'users',
-    require: true
   }
 
 });

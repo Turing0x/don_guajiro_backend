@@ -11,7 +11,7 @@ async function getAllDebts(req: Request, res: Response) {
 
     if( date ) {
       const debts = await DebtModel.find({ date }).lean()
-        .populate(['type', 'owner']);
+        .populate('type');
         
       return sendRes(res, 200, true, 'Datos Obtenidos', debts);
     }
@@ -58,27 +58,26 @@ async function saveDebt(req: Request, res: Response) {
 
   try {
 
-    const data: Debt = req.body;
+    const {_id, ...data}: Debt = req.body;
 
-    const existingDebt = await DebtModel.findById(data._id);
-    if (existingDebt) {
+    if (_id !== '') {
 
-      const newObj = Object.assign(existingDebt, data);
+      const existingDebt = await DebtModel.findById(_id);
+
+      const newObj = Object.assign(existingDebt || {}, data);
       const newData = new DebtModel(newObj);
 
-      await DebtModel.findByIdAndUpdate(data._id, newData, { new: true });
+      await DebtModel.findByIdAndUpdate(_id, newData, { new: true });
       return sendRes(res, 200, true, 'Operación Editada Exitosamente', '');
     }
 
-    const debt = new DebtModel({
-      ...data,
-      owner: res.userData?.id
-    });
-
+    const debt = new DebtModel(data);
     await debt.save();
+
     return sendRes(res, 200, true, 'Operación Creada Exitosamente', '');
     
   } catch (error) {
+    console.log(error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', error);
   }
 
