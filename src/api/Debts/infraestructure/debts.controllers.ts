@@ -58,18 +58,7 @@ async function saveDebt(req: Request, res: Response) {
 
   try {
 
-    const {_id, ...data}: Debt = req.body;
-
-    if (_id !== '') {
-
-      const existingDebt = await DebtModel.findById(_id);
-
-      const newObj = Object.assign(existingDebt || {}, data);
-      const newData = new DebtModel(newObj);
-
-      await DebtModel.findByIdAndUpdate(_id, newData, { new: true });
-      return sendRes(res, 200, true, 'Operación Editada Exitosamente', '');
-    }
+    const data: Debt = req.body;
 
     const debt = new DebtModel(data);
     await debt.save();

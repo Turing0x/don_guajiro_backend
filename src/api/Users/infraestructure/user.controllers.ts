@@ -117,11 +117,9 @@ async function sign(req: Request, res: Response) {
     )
   
     return sendRes(res, 200, true, 'Inicio de sesión correcto', {
-      user: {
-        username: exist.username,
-        userID: exist._id,
-        role: exist.role?.toLocaleLowerCase()
-      },
+      username: exist.username,
+      userID: exist._id,
+      role: exist.role?.toLocaleLowerCase(),
       token,
     });
     
