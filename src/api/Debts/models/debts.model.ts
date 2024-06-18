@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
 const DebtSchema = new mongoose.Schema({
 
@@ -21,7 +21,7 @@ const DebtSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Types.ObjectId,
-    ref:'users',
+    ref: 'users',
     require: true
   }
 

@@ -70,7 +70,7 @@ async function saveUser(req: Request, res: Response) {
     const exist = await UserModel.findOne({ username: data.username })
 
     if (exist) {
-      return sendRes(res, 401, false, 'Ya existe ese nombre en nuestro sistema', '');
+      return sendRes(res, 400, false, 'Ya existe ese nombre en nuestro sistema', '');
     }
 
     const hashPassword = bcrypt.hashSync(data.password || '', 10);

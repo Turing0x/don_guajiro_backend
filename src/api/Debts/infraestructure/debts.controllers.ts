@@ -8,8 +8,11 @@ async function getAllDebts(req: Request, res: Response) {
 
   try {
     const { date } = req.query;
+
     if( date ) {
-      const debts = await DebtModel.find({date}).lean().populate('type');
+      const debts = await DebtModel.find({ date }).lean()
+        .populate(['type', 'owner']);
+        
       return sendRes(res, 200, true, 'Datos Obtenidos', debts);
     }
     else {
@@ -66,7 +69,7 @@ async function saveDebt(req: Request, res: Response) {
       await DebtModel.findByIdAndUpdate(data._id, newData, { new: true });
       return sendRes(res, 200, true, 'Operación Editada Exitosamente', '');
     }
-    
+
     const debt = new DebtModel({
       ...data,
       owner: res.userData?.id

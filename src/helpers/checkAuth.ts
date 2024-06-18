@@ -10,7 +10,8 @@ export async function checkAuth(req: Request, res: CustomResponse, next: NextFun
     const token: string = req.headers['access-token'] as string;
     if (!token) return sendRes(res, 500, false, 'Ha ocurrido algo grave', '');
 
-    const { username, id } = jwt.verify(token, process.env!.JWT_KEY_APP!) as { id : string, username: string };
+    const { username, id } = jwt.verify(token, (process.env.JWT_KEY_APP || '')) as { id: string, username: string };
+    
     res.userData = { id, username };
     return next();
   } catch (error) {
@@ -22,14 +23,11 @@ export interface CustomResponse extends Response {
   id?:string;
   username?: string;
 }
-
-declare global {
-  namespace Express {
-    interface Response {
-      userData?: {
-        id: string,
-        username: string
-      };
-    }
+declare module 'express' {
+  interface Response {
+    userData?: {
+      id: string;
+      username: string;
+    };
   }
 }
