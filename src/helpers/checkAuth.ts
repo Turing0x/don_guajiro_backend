@@ -8,7 +8,8 @@ export async function checkAuth(req: Request, res: CustomResponse, next: NextFun
   try {
 
     const token: string = req.headers['access-token'] as string;
-    if (!token) return sendRes(res, 500, false, 'No hay token de acceso', '');
+
+    if (!token) return sendRes(res, 500, false, 'No hay token en la peticion', '');
 
     const { username, id } = jwt.verify(token, (process.env.JWT_KEY_APP || '')) as { id: string, username: string };
     res.userData = { id, username };

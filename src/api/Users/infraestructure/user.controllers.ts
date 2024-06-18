@@ -133,7 +133,8 @@ async function tokenVerify(req: Request, res: Response) {
 
   try {
 
-    const { token } = req.params;
+    const token: string = req.headers['access-token'] as string;
+
 
     if( !token ) return sendRes(res, 400, false, 'No se ha enviado el token', '');
     const decoded = jwt.verify(token, process.env.JWT_KEY_APP || '') as { username: string }
