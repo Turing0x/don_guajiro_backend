@@ -24,14 +24,17 @@ async function getAllUsers (req: Request, res: Response) {
 async function getAllSeller (req: Request, res: Response) {
 
   try {
+    
     const users = await UserModel.find({ role: 'seller' })
       .select('-password').lean();
+    
     return sendRes(res, 200, true, 'Datos Obtenidos', users);
+
   } catch (error) { 
-    if (error instanceof Error) {1
+    if (error instanceof Error) {
       return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
     } else {
-      return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
+      return sendRes(res, 200, false, 'Ha ocurridodasdasdas algo grave', '');
     }
   }
 
