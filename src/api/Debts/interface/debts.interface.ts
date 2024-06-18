@@ -3,6 +3,5 @@ export interface Debt {
   type?:        string;
   money?:       string;
   description?: string;
-  owner?:       string;
   date?:        string;
 }
