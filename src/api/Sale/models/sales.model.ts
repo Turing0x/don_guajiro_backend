@@ -4,8 +4,7 @@ const SalesSchema = new mongoose.Schema({
 
   finished: {
     type: Boolean,
-    require: true,
-    default: false
+    default: true
   },
   price: {
     type: Number,
