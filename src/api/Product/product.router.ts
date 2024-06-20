@@ -12,7 +12,7 @@ router
 
   .post('/', checkAuth, ProductControllers.saveProduct)
 
-  .put('/:productId', checkAuth, ProductControllers.editProduct)
+  .put('/', checkAuth, ProductControllers.editProduct)
 
   .delete('/:productId', checkAuth, ProductControllers.deleteProductById)
 

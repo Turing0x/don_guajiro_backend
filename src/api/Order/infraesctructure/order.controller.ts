@@ -138,7 +138,10 @@ async function saveOrder(req: Request, res: Response) {
     const Order = new OrderModel(order);
 
     await Order.save();
-    await subtractStockOfProducts(order.product.id);
+    await subtractStockOfProducts(
+      order.product.id,
+      order.product.cantToBuy
+    );
 
     return sendRes(res, 200, true, 'Venta registrada', '');
     
@@ -154,7 +157,11 @@ async function deleteOrderById(req: Request, res: Response) {
     if( !orderId ) return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');; 
 
     const getter = await OrderModel.findById(orderId);
-    await addStockOfProducts(String(getter?.product['id']))
+    await addStockOfProducts(
+      String(getter?.product['id']),
+      getter?.product?.cantToBuy || 0
+    );
+
     await OrderModel.deleteOne({_id: orderId});
     
     
@@ -162,20 +169,20 @@ async function deleteOrderById(req: Request, res: Response) {
 
 }
 
-async function subtractStockOfProducts(id: string) {
+async function subtractStockOfProducts(id: string, cant: number) {
   const getter = await ProductModel.findById(id);
   if (getter) {
     await ProductModel.findByIdAndUpdate(getter._id,
-      { $set: { inStock: (getter.inStock || 0) - (getter.cantToBuy || 0) } },
+      { $set: { inStock: (getter.inStock || 0) - cant } },
     );
   } 
 }
 
-async function addStockOfProducts(id: string) {
+async function addStockOfProducts(id: string, cant: number) {
   const getter = await ProductModel.findById(id);
   if (getter) {
     await ProductModel.findByIdAndUpdate(getter._id,
-      { $set: { inStock: (getter.inStock || 0) + (getter.cantToBuy || 0) } },
+      { $set: { inStock: (getter.inStock || 0) + cant } },
     );
   }
 }

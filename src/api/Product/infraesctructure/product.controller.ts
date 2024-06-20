@@ -51,13 +51,21 @@ async function saveProduct(req: Request, res: Response) {
 async function editProduct(req: Request, res: Response) {
   
   try {
-    
+
     const prod: Product = req.body;
+    console.log(prod);
   
     const product = await ProductModel.findById(prod._id)
-    if (!product) return sendRes(res, 200, false, 'Ha ocurrido algo grave', ''); 
+    if (!product) return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
+
     
-    const product_obj = Object.assign(product, prod);
+    const product_obj = {
+      name: prod.name ?? product.name,
+      category: prod.category ?? product.category,
+      price: prod.price ?? product.price,
+      inStock: (product.inStock ?? 0) + prod.inStock,
+    };
+
     await ProductModel.findByIdAndUpdate(prod._id, product_obj)
   
     return sendRes(res, 200, true, 'Producto Editado', '');
