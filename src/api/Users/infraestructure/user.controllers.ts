@@ -97,7 +97,7 @@ async function sign(req: Request, res: Response) {
     const exist: User | null = await UserModel.findOne({ username })
 
     if (!exist) {
-      return sendRes(res, 401, false, 'Ese usuario no está registrado en nuestro sistema', '');
+      return sendRes(res, 200, false, 'Ese usuario no está registrado en nuestro sistema', '');
     }
     
     const compare = bcrypt.compareSync(password, exist.password || '');
