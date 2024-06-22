@@ -4,5 +4,6 @@ export const COLLECTIONS = {
   SALES: 'sales',
   ORDER: 'orders',
   PRODUCT: 'products',
-  DEBTSTYPE: 'debtstype'
+  DEBTSTYPE: 'debtstype',
+  ENTITY: 'entities'
 }
