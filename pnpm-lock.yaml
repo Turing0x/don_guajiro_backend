@@ -9,80 +9,80 @@ importers:
   .:
     dependencies:
       bcrypt:
-        specifier: ^5.1.1
+        specifier: 5.1.1
         version: 5.1.1
       cors:
-        specifier: ^2.8.5
+        specifier: 2.8.5
         version: 2.8.5
       dotenv:
-        specifier: ^16.4.5
+        specifier: 16.4.5
         version: 16.4.5
       express:
-        specifier: ^4.19.2
+        specifier: 4.19.2
         version: 4.19.2
       jsonwebtoken:
-        specifier: ^9.0.2
+        specifier: 9.0.2
         version: 9.0.2
       jwt-decode:
-        specifier: ^4.0.0
+        specifier: 4.0.0
         version: 4.0.0
       mongodb:
-        specifier: ^6.6.2
+        specifier: 6.6.2
         version: 6.6.2
       mongoose:
-        specifier: ^8.4.0
+        specifier: 8.4.0
         version: 8.4.0
       mssql:
-        specifier: ^10.0.2
+        specifier: 10.0.2
         version: 10.0.2
       nodemailer:
-        specifier: ^6.9.13
+        specifier: 6.9.13
         version: 6.9.13
       ts-node:
-        specifier: ^10.9.2
+        specifier: 10.9.2
         version: 10.9.2(@types/node@20.12.12)(typescript@5.4.5)
       uuid:
-        specifier: ^9.0.1
+        specifier: 9.0.1
         version: 9.0.1
     devDependencies:
       '@eslint/js':
-        specifier: ^9.3.0
+        specifier: 9.3.0
         version: 9.3.0
       '@types/bcrypt':
-        specifier: ^5.0.2
+        specifier: 5.0.2
         version: 5.0.2
       '@types/cors':
-        specifier: ^2.8.17
+        specifier: 2.8.17
         version: 2.8.17
       '@types/express':
-        specifier: ^4.17.21
+        specifier: 4.17.21
         version: 4.17.21
       '@types/jsonwebtoken':
-        specifier: ^9.0.6
+        specifier: 9.0.6
         version: 9.0.6
       '@types/mssql':
-        specifier: ^9.1.5
+        specifier: 9.1.5
         version: 9.1.5
       '@types/node':
-        specifier: ^20.12.12
+        specifier: 20.12.12
         version: 20.12.12
       '@types/nodemailer':
-        specifier: ^6.4.15
+        specifier: 6.4.15
         version: 6.4.15
       '@types/uuid':
-        specifier: ^9.0.8
+        specifier: 9.0.8
         version: 9.0.8
       eslint:
-        specifier: ^9.3.0
+        specifier: 9.3.0
         version: 9.3.0
       tslib:
-        specifier: ^2.6.2
+        specifier: 2.6.2
         version: 2.6.2
       typescript:
-        specifier: ^5.4.5
+        specifier: 5.4.5
         version: 5.4.5
       typescript-eslint:
-        specifier: ^7.10.0
+        specifier: 7.10.0
         version: 7.10.0(eslint@9.3.0)(typescript@5.4.5)
 
 packages:
@@ -176,6 +176,7 @@ packages:
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -183,6 +184,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+    deprecated: Use @eslint/object-schema instead
 
   '@humanwhocodes/retry@0.3.0':
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
@@ -799,6 +801,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -888,6 +891,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -1356,6 +1360,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   run-parallel@1.2.0:

@@ -7,7 +7,15 @@ import { Product } from '../models/product.model';
 async function getAllProducts(req: Request, res: Response) {
   try {
 
-    const products = (await ProductModel.find())
+    if( !req.userData!.entity ) {
+
+      const products = (await ProductModel.find())
+        .filter( product => product.inStock !== 0 );
+      return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
+
+    }  
+
+    const products = (await ProductModel.find({entity: req.userData!.entity}))
       .filter( product => product.inStock !== 0 );
     return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
     
@@ -53,11 +61,9 @@ async function editProduct(req: Request, res: Response) {
   try {
 
     const prod: Product = req.body;
-    console.log(prod);
   
     const product = await ProductModel.findById(prod._id)
     if (!product) return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
-
     
     const product_obj = {
       name: prod.name ?? product.name,

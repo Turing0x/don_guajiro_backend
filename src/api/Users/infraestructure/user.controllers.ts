@@ -103,14 +103,15 @@ async function sign(req: Request, res: Response) {
     const compare = bcrypt.compareSync(password, exist.password || '');
     if (!compare) return sendRes(
       res,
-      401,
+      200,
       false,
       'Contraseña incorrecta', '');
       
     const token = jwt.sign(
       {
         id: exist._id,
-        username: exist.username
+        username: exist.username,
+        entity: exist.entity
       },
       process.env.JWT_KEY_APP || '',
       { expiresIn: '1d' }
@@ -119,6 +120,7 @@ async function sign(req: Request, res: Response) {
     return sendRes(res, 200, true, 'Inicio de sesión correcto', {
       username: exist.username,
       userID: exist._id,
+      entity: exist.entity,
       role: exist.role?.toLocaleLowerCase(),
       token,
     });

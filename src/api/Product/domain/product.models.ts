@@ -21,6 +21,11 @@ const ProductSchema = new mongoose.Schema({
   cantToBuy: {
     type: Number,
     require: true,
+  },
+  entity: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'entities',
+    require: true
   }
 
 });

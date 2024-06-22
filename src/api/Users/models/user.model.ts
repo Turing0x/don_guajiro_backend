@@ -22,6 +22,11 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     default: 'guest',
+  },
+  entity: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'entities',
+    require: true
   }
 
 });
