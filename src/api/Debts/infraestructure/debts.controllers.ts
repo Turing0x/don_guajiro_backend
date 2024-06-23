@@ -9,16 +9,11 @@ async function getAllDebts(req: Request, res: Response) {
   try {
     const { date } = req.query;
 
-    if( date ) {
-      const debts = await DebtModel.find({ date }).lean()
-        .populate('type');
-        
-      return sendRes(res, 200, true, 'Datos Obtenidos', debts);
-    }
-    else {
-      const debts = await DebtModel.find().populate('type');
-      return sendRes(res, 200, true, 'Datos Obtenidos', debts);
-    }
+    const debts = await DebtModel.find({ date }).lean()
+      .populate('type');
+      
+    return sendRes(res, 200, true, 'Datos Obtenidos', debts);
+    
   } catch (error) { 
     if (error instanceof Error) {
       return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message); 
@@ -59,6 +54,7 @@ async function saveDebt(req: Request, res: Response) {
   try {
 
     const data: Debt = req.body;
+    console.log('data', data);
 
     const debt = new DebtModel(data);
     await debt.save();
@@ -66,7 +62,6 @@ async function saveDebt(req: Request, res: Response) {
     return sendRes(res, 200, true, 'Operación Creada Exitosamente', '');
     
   } catch (error) {
-    console.log(error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', error);
   }
 

@@ -4,7 +4,7 @@ const DebtSchema = new mongoose.Schema({
 
   type: {
     type: mongoose.Types.ObjectId,
-    ref:'debtsTypes',
+    ref: 'debtsTypes',
     require: true
   },
   money: {

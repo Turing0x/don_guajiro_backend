@@ -7,10 +7,6 @@ const SalesSchema = new mongoose.Schema({
     type: Number,
     require: true
   },
-  description: {
-    type: String,
-    require: true
-  },
   product: {
     type: String,
     require: true
@@ -23,9 +19,9 @@ const SalesSchema = new mongoose.Schema({
     type: Number,
     require: true
   },
-  unities: {
-    type: Number,
-    require: true
+  owner: {
+    type: String,
+    required: true
   },
   entity: {
     type: mongoose.Types.ObjectId,
