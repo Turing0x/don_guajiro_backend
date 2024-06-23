@@ -103,7 +103,7 @@ async function sign(req: Request, res: Response) {
     const compare = bcrypt.compareSync(password, exist.password || '');
     if (!compare) return sendRes(
       res,
-      401,
+      200,
       false,
       'Contraseña incorrecta', '');
       
