@@ -2,10 +2,6 @@ import mongoose from 'mongoose';
 
 const SalesSchema = new mongoose.Schema({
 
-  finished: {
-    type: Boolean,
-    default: true
-  },
   price: {
     type: Number,
     require: true

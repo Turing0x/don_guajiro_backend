@@ -1,6 +1,5 @@
 export interface Sale {
   _id?:         string;
-  finished?:    boolean;
   price?:       number;
   description?: string;
   product?:     string;
