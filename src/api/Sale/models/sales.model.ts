@@ -1,3 +1,4 @@
+import { Entity } from './../../Entity/models/entity.model';
 import mongoose from 'mongoose';
 
 const SalesSchema = new mongoose.Schema({
@@ -30,6 +31,11 @@ const SalesSchema = new mongoose.Schema({
     type: Number,
     require: true
   },
+  entity: {
+    type: mongoose.Types.ObjectId,
+    ref:'entities',
+    require: true
+  }
 
 });
 
