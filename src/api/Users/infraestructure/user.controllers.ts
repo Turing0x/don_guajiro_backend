@@ -184,11 +184,11 @@ async function deleteUser (req: Request, res: Response) {
 async function changeActive(req: Request, res: Response) {
   try {
 
-    const data: User = req.body
+    const { id, enable } = req.params
 
-    await UserModel.findOneAndUpdate({ _id: data._id }, {
-      $set: {enable: data.enable}
-    })
+    await UserModel.findByIdAndUpdate({ id }, {
+      $set: {enable: Boolean(enable)}
+    });
 
     return sendRes(res, 200, true, 'Usuario Editado', '');
 
@@ -201,9 +201,9 @@ export const UsersControllers = {
   getAllUsers,
   getAllSeller,
   getUsersById,
-  saveUser,
-  sign,
+  changeActive,
   tokenVerify,
   deleteUser,
-  changeActive
+  saveUser,
+  sign
 }

@@ -67,7 +67,6 @@ async function editProduct(req: Request, res: Response) {
     
     const product_obj = {
       name: prod.name ?? product.name,
-      category: prod.category ?? product.category,
       price: prod.price ?? product.price,
       inStock: (product.inStock ?? 0) + prod.inStock,
     };
