@@ -24,6 +24,18 @@ async function getAllUsers (req: Request, res: Response) {
 async function getAllSeller (req: Request, res: Response) {
 
   try {
+
+    const entity = req.query.entity;
+    if(entity) {
+
+      const users = await UserModel.find({
+        $and: [{ role: 'seller' }, { entity }]
+      })
+      .select('-password').lean();
+    
+      return sendRes(res, 200, true, 'Datos Obtenidos', users);
+
+    }
     
     const users = await UserModel.find({ role: 'seller' })
       .select('-password').lean();
@@ -185,15 +197,15 @@ async function deleteUser (req: Request, res: Response) {
 async function changeActive(req: Request, res: Response) {
   try {
 
-    const { id, enable } = req.params
+    const { id, enable } = req.params;
 
-    await UserModel.findByIdAndUpdate({ id }, {
-      $set: {enable: Boolean(enable)}
-    });
+    await UserModel.updateOne({ _id: id }, 
+      { $set: { enable } });
 
     return sendRes(res, 200, true, 'Usuario Editado', '');
 
   } catch (error) {
+    console.log(error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
   }
 }

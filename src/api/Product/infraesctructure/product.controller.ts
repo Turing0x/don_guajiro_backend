@@ -7,12 +7,17 @@ import { Product } from '../models/product.model';
 async function getAllProducts(req: Request, res: Response) {
   try {
 
-    if( !req.userData!.entity ) {
+    const entity = req.query.entity;
+    if(entity) {
+      const products = (await ProductModel.find({ entity }))
+        .filter( product => product.inStock !== 0 );
+      return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
+    }
 
+    if( !req.userData!.entity ) {
       const products = (await ProductModel.find())
         .filter( product => product.inStock !== 0 );
       return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
-
     }  
 
     const products = (await ProductModel.find({entity: req.userData!.entity}))
