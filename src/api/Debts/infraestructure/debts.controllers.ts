@@ -54,7 +54,6 @@ async function saveDebt(req: Request, res: Response) {
   try {
 
     const data: Debt = req.body;
-    console.log('data', data);
 
     const debt = new DebtModel(data);
     await debt.save();

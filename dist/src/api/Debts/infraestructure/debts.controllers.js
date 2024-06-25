@@ -55,7 +55,6 @@ function saveDebt(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const data = req.body;
-            console.log('data', data);
             const debt = new debts_model_1.DebtModel(data);
             yield debt.save();
             return (0, send_res_1.sendRes)(res, 200, true, 'Operación Creada Exitosamente', '');

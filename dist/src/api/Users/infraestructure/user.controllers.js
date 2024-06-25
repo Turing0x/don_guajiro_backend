@@ -148,7 +148,6 @@ function tokenVerify(req, res) {
             });
         }
         catch (error) {
-            console.log(error);
             return (0, send_res_1.sendRes)(res, 400, false, 'Ha ocurrido algo grave', '');
         }
     });
@@ -180,7 +179,6 @@ function changeActive(req, res) {
             return (0, send_res_1.sendRes)(res, 200, true, 'Usuario Editado', '');
         }
         catch (error) {
-            console.log(error);
             return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
         }
     });

@@ -58,7 +58,6 @@ function saveSale(req, res) {
             return (0, send_res_1.sendRes)(res, 200, true, 'Venta Registrada Exitosamente', '');
         }
         catch (error) {
-            console.log(error);
             return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error);
         }
     });

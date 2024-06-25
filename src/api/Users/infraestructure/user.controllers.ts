@@ -168,7 +168,6 @@ async function tokenVerify(req: Request, res: Response) {
     });
 
   } catch (error) { 
-    console.log(error)
     
     return sendRes(res, 400, false, 'Ha ocurrido algo grave', ''); }
 
@@ -205,7 +204,6 @@ async function changeActive(req: Request, res: Response) {
     return sendRes(res, 200, true, 'Usuario Editado', '');
 
   } catch (error) {
-    console.log(error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
   }
 }

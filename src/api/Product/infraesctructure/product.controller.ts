@@ -55,7 +55,6 @@ async function saveProduct(req: Request, res: Response) {
     return sendRes(res, 200, true, 'Producto guardado con éxito', '');
 
   } catch (error) {
-    console.log(error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
   }
 
