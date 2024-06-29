@@ -16,6 +16,15 @@ function getAllProducts(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const entity = req.query.entity;
+            if (req.userData.id === '664ea0d6da2837120cc81a74') {
+                const products = (yield product_models_1.ProductModel.find())
+                    .filter(product => {
+                    var _a;
+                    return product.inStock !== 0
+                        && ((_a = product.entity) === null || _a === void 0 ? void 0 : _a.toString()) !== '6678a74f5c74083fdfaed061';
+                });
+                return (0, send_res_1.sendRes)(res, 200, true, 'Resultado de la búsqueda', products);
+            }
             if (entity) {
                 const products = (yield product_models_1.ProductModel.find({ entity }))
                     .filter(product => product.inStock !== 0);
@@ -69,13 +78,17 @@ function editProduct(req, res) {
         var _a, _b, _c;
         try {
             const prod = req.body;
+            let cant = 0;
             const product = yield product_models_1.ProductModel.findById(prod._id);
             if (!product)
                 return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
+            if (prod.inStock !== product.inStock) {
+                cant = ((_a = product.inStock) !== null && _a !== void 0 ? _a : 0) + prod.inStock;
+            }
             const product_obj = {
-                name: (_a = prod.name) !== null && _a !== void 0 ? _a : product.name,
-                price: (_b = prod.price) !== null && _b !== void 0 ? _b : product.price,
-                inStock: ((_c = product.inStock) !== null && _c !== void 0 ? _c : 0) + prod.inStock,
+                name: (_b = prod.name) !== null && _b !== void 0 ? _b : product.name,
+                price: (_c = prod.price) !== null && _c !== void 0 ? _c : product.price,
+                inStock: cant,
             };
             yield product_models_1.ProductModel.findByIdAndUpdate(prod._id, product_obj);
             return (0, send_res_1.sendRes)(res, 200, true, 'Producto Editado', '');

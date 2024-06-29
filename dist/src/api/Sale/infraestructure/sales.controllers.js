@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SalesControllers = void 0;
 const send_res_1 = require("../../../helpers/send.res");
 const sales_model_1 = require("../models/sales.model");
+const product_models_1 = require("../../Product/domain/product.models");
 function getAllSales(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -55,9 +56,14 @@ function saveSale(req, res) {
         try {
             const debt = new sales_model_1.SalesModel(req.body);
             yield debt.save();
+            const getter = yield product_models_1.ProductModel.findOne({ name: debt.product });
+            if (getter) {
+                yield product_models_1.ProductModel.findByIdAndUpdate(getter._id, { $set: { inStock: (getter.inStock || 0) - debt.cantToBuy } });
+            }
             return (0, send_res_1.sendRes)(res, 200, true, 'Venta Registrada Exitosamente', '');
         }
         catch (error) {
+            console.log('error', error);
             return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error);
         }
     });
@@ -68,7 +74,12 @@ function deleteSale(req, res) {
             const { id } = req.params;
             if (!id)
                 return (0, send_res_1.sendRes)(res, 200, false, 'Operación no encontrada', '');
+            const getter = yield sales_model_1.SalesModel.findById(id);
             yield sales_model_1.SalesModel.deleteOne({ _id: id });
+            const getterProd = yield product_models_1.ProductModel.findOne({ name: getter.product });
+            if (getterProd) {
+                yield product_models_1.ProductModel.findByIdAndUpdate(getterProd._id, { $set: { inStock: (getterProd.inStock || 0) - getter.cantToBuy } });
+            }
             return (0, send_res_1.sendRes)(res, 200, true, 'Venta Eliminada Correctamente', '');
         }
         catch (error) {

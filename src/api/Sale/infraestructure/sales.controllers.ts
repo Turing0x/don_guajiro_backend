@@ -3,6 +3,8 @@ import { Response, Request } from 'express';
 import { sendRes } from '../../../helpers/send.res';
 import { SalesModel } from '../models/sales.model';
 import { Sale } from '../interface/sales.interface';
+import { ProductModel } from '../../Product/domain/product.models';
+import { Types } from 'mongoose';
 
 async function getAllSales(req: Request, res: Response) {
 
@@ -55,10 +57,20 @@ async function saveSale(req: Request, res: Response) {
   try {
 
     const debt = new SalesModel(req.body as Sale);
+
     await debt.save();
+
+    const getter = await ProductModel.findOne({name: debt.product});
+    if (getter) {
+      await ProductModel.findByIdAndUpdate(getter._id,
+        { $set: { inStock: (getter.inStock || 0) - debt.cantToBuy! } },
+      );
+    }
+
     return sendRes(res, 200, true, 'Venta Registrada Exitosamente', '');
 
   } catch (error) {
+    console.log('error', error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', error);
   }
 
@@ -71,7 +83,17 @@ async function deleteSale(req: Request, res: Response) {
     const { id } = req.params;
     if (!id) return sendRes(res, 200, false, 'Operación no encontrada', '');
 
-    await SalesModel.deleteOne({ _id: id })
+    const getter = await SalesModel.findById(id);
+
+    await SalesModel.deleteOne({ _id: id });
+    
+    const getterProd = await ProductModel.findOne({name: getter!.product});
+    if (getterProd) {
+      await ProductModel.findByIdAndUpdate(getterProd._id,
+        { $set: { inStock: (getterProd.inStock || 0) - getter!.cantToBuy! } },
+      );
+    }
+
     return sendRes(res, 200, true, 'Venta Eliminada Correctamente', '');
 
   } catch (error) {
