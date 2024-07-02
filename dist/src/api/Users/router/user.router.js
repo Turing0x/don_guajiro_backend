@@ -12,6 +12,7 @@ router
     .post('/', checkAuth_1.checkAuth, user_controllers_1.UsersControllers.saveUser)
     .post('/signIn', user_controllers_1.UsersControllers.sign)
     .post('/checkToken', user_controllers_1.UsersControllers.tokenVerify)
+    .post('/changePassword', checkAuth_1.checkAuth, user_controllers_1.UsersControllers.changePassword)
     .put('/:id/:enable', checkAuth_1.checkAuth, user_controllers_1.UsersControllers.changeActive)
     .delete('/:id', checkAuth_1.checkAuth, user_controllers_1.UsersControllers.deleteUser);
 exports.UsersRouter = router;

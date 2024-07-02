@@ -208,11 +208,49 @@ async function changeActive(req: Request, res: Response) {
   }
 }
 
+async function changePassword(req: Request, res: Response) {
+  try {
+
+    let { actualPass, newPass } = req.body;
+    const existingUser = await UserModel.findOne({
+      _id: req.userData!.id
+    }).select('password');
+
+    bcrypt.compare(actualPass, existingUser?.password!, async (err, result) => {
+      if (!result) {
+        return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', '');
+      }
+
+      if (err) {
+        return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', '');
+      }
+
+      newPass = await bcrypt.hash(newPass, 10);
+
+      UserModel.updateOne({ _id: existingUser?.id }, { $set: { password: newPass } })
+        .then(() => {
+          return sendRes(res, 200, true, 'La clave de acceso ha sido cambiada correctamente', '');
+        })
+        .catch((err) => {
+          return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', err.message);
+        });
+    });
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', error.message);
+    } else {
+      return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', '');
+    }
+  }
+};
+
 export const UsersControllers = {
-  getAllUsers,
+  changePassword,
   getAllSeller,
   getUsersById,
   changeActive,
+  getAllUsers,
   tokenVerify,
   deleteUser,
   saveUser,

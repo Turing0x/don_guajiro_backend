@@ -15,6 +15,7 @@ router
   .post('/', checkAuth, UsersControllers.saveUser)
   .post('/signIn', UsersControllers.sign)
   .post('/checkToken',  UsersControllers.tokenVerify)
+  .post('/changePassword', checkAuth, UsersControllers.changePassword)
 
   .put('/:id/:enable', checkAuth, UsersControllers.changeActive)
 

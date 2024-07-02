@@ -183,11 +183,47 @@ function changeActive(req, res) {
         }
     });
 }
+function changePassword(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let { actualPass, newPass } = req.body;
+            const existingUser = yield user_model_1.UserModel.findOne({
+                _id: req.userData.id
+            }).select('password');
+            bcrypt_1.default.compare(actualPass, existingUser === null || existingUser === void 0 ? void 0 : existingUser.password, (err, result) => __awaiter(this, void 0, void 0, function* () {
+                if (!result) {
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', '');
+                }
+                if (err) {
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', '');
+                }
+                newPass = yield bcrypt_1.default.hash(newPass, 10);
+                user_model_1.UserModel.updateOne({ _id: existingUser === null || existingUser === void 0 ? void 0 : existingUser.id }, { $set: { password: newPass } })
+                    .then(() => {
+                    return (0, send_res_1.sendRes)(res, 200, true, 'La clave de acceso ha sido cambiada correctamente', '');
+                })
+                    .catch((err) => {
+                    return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', err.message);
+                });
+            }));
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', error.message);
+            }
+            else {
+                return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', '');
+            }
+        }
+    });
+}
+;
 exports.UsersControllers = {
-    getAllUsers,
+    changePassword,
     getAllSeller,
     getUsersById,
     changeActive,
+    getAllUsers,
     tokenVerify,
     deleteUser,
     saveUser,
