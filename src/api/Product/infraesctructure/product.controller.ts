@@ -10,26 +10,22 @@ async function getAllProducts(req: Request, res: Response) {
     const entity = req.query.entity;
     if(req.userData!.id === '664ea0d6da2837120cc81a74') {
       const products = (await ProductModel.find())
-        .filter( product => product.inStock !== 0 
-          && product.entity?.toString() !== '6678a74f5c74083fdfaed061'
-        );
+        .filter( product =>
+          product.entity?.toString() !== '6678a74f5c74083fdfaed061' );
       return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
     }
     
     if(entity) {
-      const products = (await ProductModel.find({ entity }))
-        .filter( product => product.inStock !== 0 );
+      const products = await ProductModel.find({ entity });
       return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
     }
 
     if( !req.userData!.entity ) {
-      const products = (await ProductModel.find())
-        .filter( product => product.inStock !== 0 );
+      const products = (await ProductModel.find());
       return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
     }
 
-    const products = (await ProductModel.find({entity: req.userData!.entity}))
-      .filter( product => product.inStock !== 0 );
+    const products = await ProductModel.find({entity: req.userData!.entity});
     return sendRes(res, 200, true, 'Resultado de la búsqueda', products);
     
   } catch (error) { return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');}
@@ -80,7 +76,7 @@ async function editProduct(req: Request, res: Response) {
 
     if( prod.inStock !== product.inStock ) {
       cant = (product.inStock ?? 0) + prod.inStock
-    }
+    } else { cant = product.inStock }
     
     const product_obj = {
       name: prod.name ?? product.name,

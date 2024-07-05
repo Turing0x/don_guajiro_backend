@@ -18,25 +18,18 @@ function getAllProducts(req, res) {
             const entity = req.query.entity;
             if (req.userData.id === '664ea0d6da2837120cc81a74') {
                 const products = (yield product_models_1.ProductModel.find())
-                    .filter(product => {
-                    var _a;
-                    return product.inStock !== 0
-                        && ((_a = product.entity) === null || _a === void 0 ? void 0 : _a.toString()) !== '6678a74f5c74083fdfaed061';
-                });
+                    .filter(product => { var _a; return ((_a = product.entity) === null || _a === void 0 ? void 0 : _a.toString()) !== '6678a74f5c74083fdfaed061'; });
                 return (0, send_res_1.sendRes)(res, 200, true, 'Resultado de la búsqueda', products);
             }
             if (entity) {
-                const products = (yield product_models_1.ProductModel.find({ entity }))
-                    .filter(product => product.inStock !== 0);
+                const products = yield product_models_1.ProductModel.find({ entity });
                 return (0, send_res_1.sendRes)(res, 200, true, 'Resultado de la búsqueda', products);
             }
             if (!req.userData.entity) {
-                const products = (yield product_models_1.ProductModel.find())
-                    .filter(product => product.inStock !== 0);
+                const products = (yield product_models_1.ProductModel.find());
                 return (0, send_res_1.sendRes)(res, 200, true, 'Resultado de la búsqueda', products);
             }
-            const products = (yield product_models_1.ProductModel.find({ entity: req.userData.entity }))
-                .filter(product => product.inStock !== 0);
+            const products = yield product_models_1.ProductModel.find({ entity: req.userData.entity });
             return (0, send_res_1.sendRes)(res, 200, true, 'Resultado de la búsqueda', products);
         }
         catch (error) {
@@ -84,6 +77,9 @@ function editProduct(req, res) {
                 return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
             if (prod.inStock !== product.inStock) {
                 cant = ((_a = product.inStock) !== null && _a !== void 0 ? _a : 0) + prod.inStock;
+            }
+            else {
+                cant = product.inStock;
             }
             const product_obj = {
                 name: (_b = prod.name) !== null && _b !== void 0 ? _b : product.name,
