@@ -18,6 +18,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const index_routes_1 = require("../routes/index.routes");
 const config_1 = require("../database/config");
+const env_1 = require("../environments/env");
 class ExpressServer {
     constructor() {
         this.app = (0, express_1.default)();
@@ -28,9 +29,9 @@ class ExpressServer {
         this.routes();
     }
     listen() {
-        this.app.listen(process.env.PORT, () => {
+        this.app.listen(env_1.Environment.PORT, () => {
             console.clear();
-            console.log('Servidor corriendo en el puerto', process.env.PORT);
+            console.log('Servidor corriendo en el puerto', env_1.Environment.PORT);
         });
     }
     conectDB() {
@@ -43,6 +44,6 @@ class ExpressServer {
         // Ruta publica para ver el html
         this.app.use(express_1.default.static('src/public'));
     }
-    routes() { this.app.use(process.env.ROUTES_PREFIX, index_routes_1.api); }
+    routes() { this.app.use(env_1.Environment.ROUTES_PREFIX, index_routes_1.api); }
 }
 exports.ExpressServer = ExpressServer;

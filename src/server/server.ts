@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import { api } from '../routes/index.routes';
 import { dbConnection } from '../database/config';
+import { Environment } from '../environments/env';
 
 export class ExpressServer {
   
@@ -23,9 +24,9 @@ export class ExpressServer {
 
   listen() {    
     this.app.listen(
-      process.env.PORT, () => {
+      Environment.PORT, () => {
         console.clear();
-        console.log('Servidor corriendo en el puerto', process.env.PORT)
+        console.log('Servidor corriendo en el puerto', Environment.PORT)
       }
     )
   }
@@ -42,6 +43,6 @@ export class ExpressServer {
     this.app.use(express.static('src/public'))
   }
 
-  routes() { this.app.use(process.env.ROUTES_PREFIX, api) }
+  routes() { this.app.use(Environment.ROUTES_PREFIX, api) }
   
 }

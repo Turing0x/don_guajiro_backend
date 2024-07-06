@@ -15,13 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkAuth = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const send_res_1 = require("./send.res");
+const env_1 = require("../environments/env");
 function checkAuth(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const token = req.headers['access-token'];
             if (!token)
                 return (0, send_res_1.sendRes)(res, 500, false, 'No hay token en la peticion', '');
-            const { username, id, entity } = jsonwebtoken_1.default.verify(token, (process.env.JWT_KEY_APP || ''));
+            const { username, id, entity } = jsonwebtoken_1.default.verify(token, (env_1.Environment.JWT_KEY_APP || ''));
             req.userData = { id, username, entity };
             return next();
         }

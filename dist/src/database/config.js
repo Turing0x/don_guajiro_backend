@@ -10,11 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbConnection = void 0;
+const env_1 = require("../environments/env");
 const mongoose = require('mongoose');
 const dbConnection = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         mongoose.set('strictQuery', true);
-        mongoose.connect(process.env.MONGO_URL);
+        mongoose.connect(env_1.Environment.MONGO_URL);
         console.clear();
         console.log('Base de datos Online');
     }

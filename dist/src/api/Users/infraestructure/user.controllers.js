@@ -17,6 +17,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const send_res_1 = require("../../../helpers/send.res");
 const user_model_1 = require("../models/user.model");
+const env_1 = require("../../../environments/env");
 function getAllUsers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -115,7 +116,7 @@ function sign(req, res) {
                 id: exist._id,
                 username: exist.username,
                 entity: exist.entity
-            }, process.env.JWT_KEY_APP || '', { expiresIn: '1d' });
+            }, env_1.Environment.JWT_KEY_APP || '', { expiresIn: '1d' });
             return (0, send_res_1.sendRes)(res, 200, true, 'Inicio de sesión correcto', {
                 userID: exist._id,
                 name: exist.name,
@@ -126,6 +127,7 @@ function sign(req, res) {
             });
         }
         catch (error) {
+            console.log('error', error);
             return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
         }
     });
@@ -136,9 +138,9 @@ function tokenVerify(req, res) {
             const token = req.headers['access-token'];
             if (!token)
                 return (0, send_res_1.sendRes)(res, 400, false, 'No se ha enviado el token', '');
-            const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY_APP || '');
+            const decoded = jsonwebtoken_1.default.verify(token, env_1.Environment.JWT_KEY_APP || '');
             const user = yield user_model_1.UserModel.findOne({ username: decoded['username'] });
-            const newToken = jsonwebtoken_1.default.sign({ id: user === null || user === void 0 ? void 0 : user._id, username: user === null || user === void 0 ? void 0 : user.username }, process.env.JWT_KEY_APP || '', { expiresIn: '1d' });
+            const newToken = jsonwebtoken_1.default.sign({ id: user === null || user === void 0 ? void 0 : user._id, username: user === null || user === void 0 ? void 0 : user.username }, env_1.Environment.JWT_KEY_APP || '', { expiresIn: '1d' });
             return (0, send_res_1.sendRes)(res, 200, true, 'todo ok', {
                 user: {
                     userID: user === null || user === void 0 ? void 0 : user._id,

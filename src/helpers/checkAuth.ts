@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import { Request, Response, NextFunction } from 'express';
 import { sendRes } from './send.res';
+import { Environment } from '../environments/env';
 
 export async function checkAuth(req: CustomRequest, res: Response, next: NextFunction) {
 
@@ -11,7 +12,7 @@ export async function checkAuth(req: CustomRequest, res: Response, next: NextFun
 
     if (!token) return sendRes(res, 500, false, 'No hay token en la peticion', '');
 
-    const { username, id, entity } = jwt.verify(token, (process.env.JWT_KEY_APP || '')
+    const { username, id, entity } = jwt.verify(token, (Environment.JWT_KEY_APP || '')
       ) as { id: string, username: string, entity: string };
 
     req.userData = { id, username, entity };

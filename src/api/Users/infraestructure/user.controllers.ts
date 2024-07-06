@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { sendRes } from '../../../helpers/send.res';
 import { UserModel } from '../models/user.model';
 import { User } from '../interface/user.interface';
+import { Environment } from '../../../environments/env';
 
 async function getAllUsers (req: Request, res: Response) {
 
@@ -125,7 +126,7 @@ async function sign(req: Request, res: Response) {
         username: exist.username,
         entity: exist.entity
       },
-      process.env.JWT_KEY_APP || '',
+      Environment.JWT_KEY_APP || '',
       { expiresIn: '1d' }
     )
   
@@ -138,7 +139,9 @@ async function sign(req: Request, res: Response) {
       token,
     });
     
-  } catch (error) { return sendRes(res, 200, false, 'Ha ocurrido algo grave', ''); }
+  } catch (error) { 
+    console.log('error', error);
+    return sendRes(res, 200, false, 'Ha ocurrido algo grave', ''); }
 
 }
 
@@ -150,12 +153,12 @@ async function tokenVerify(req: Request, res: Response) {
 
 
     if( !token ) return sendRes(res, 400, false, 'No se ha enviado el token', '');
-    const decoded = jwt.verify(token, process.env.JWT_KEY_APP || '') as { username: string }
+    const decoded = jwt.verify(token, Environment.JWT_KEY_APP || '') as { username: string }
 
     const user = await UserModel.findOne({ username: decoded['username'] });
     const newToken = jwt.sign(
       { id: user?._id, username: user?.username },
-      process.env.JWT_KEY_APP || '',
+      Environment.JWT_KEY_APP || '',
       { expiresIn: '1d' }
     )
 
