@@ -21,13 +21,13 @@ function checkAuth(req, res, next) {
         try {
             const token = req.headers['access-token'];
             if (!token)
-                return (0, send_res_1.sendRes)(res, 500, false, 'No hay token en la peticion', '');
+                return (0, send_res_1.sendRes)(res, 200, false, 'No hay token en la peticion', '');
             const { username, id, entity } = jsonwebtoken_1.default.verify(token, (env_1.Environment.JWT_KEY_APP || ''));
             req.userData = { id, username, entity };
             return next();
         }
         catch (error) {
-            return (0, send_res_1.sendRes)(res, 500, false, 'Problema con el token de acceso', error);
+            return (0, send_res_1.sendRes)(res, 200, false, 'Problema con el token de acceso', error);
         }
     });
 }

@@ -9,13 +9,7 @@ const DebtTypeSchema = new mongoose.Schema({
   side: {
     type: Boolean,
     default: true,
-  },
-  status: {
-    type: Boolean,
-    default: true,
-    require: true,
   }
-
 
 });
 

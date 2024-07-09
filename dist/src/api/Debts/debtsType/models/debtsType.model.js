@@ -10,10 +10,9 @@ const DebtTypeSchema = new mongoose_1.default.Schema({
         type: String,
         require: true
     },
-    status: {
+    side: {
         type: Boolean,
         default: true,
-        require: true,
     }
 });
 exports.DebtTypeModel = mongoose_1.default.model('debtsTypes', DebtTypeSchema);

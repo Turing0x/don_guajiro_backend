@@ -15,7 +15,7 @@ const debtsType_model_1 = require("../models/debtsType.model");
 function getAllDebtsType(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const debtsType = yield debtsType_model_1.DebtTypeModel.find({ status: true });
+            const debtsType = yield debtsType_model_1.DebtTypeModel.find();
             return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', debtsType);
         }
         catch (error) {
@@ -31,19 +31,15 @@ function getAllDebtsType(req, res) {
 function SaveDebtsType(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let { name } = req.body;
-            if (!name || name === '')
+            let { name, side } = req.body;
+            if (!name)
                 return (0, send_res_1.sendRes)(res, 200, false, 'Rellene el campo', '');
             name = name.toLowerCase();
-            const debt = yield debtsType_model_1.DebtTypeModel.findOne({ name, status: true });
-            const debts2 = yield debtsType_model_1.DebtTypeModel.findOne({ name, status: false });
+            const debt = yield debtsType_model_1.DebtTypeModel.findOne({ name });
             if (debt)
                 return (0, send_res_1.sendRes)(res, 200, false, 'Ya existe este nombre', '');
-            else if (debts2) {
-                return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', yield debtsType_model_1.DebtTypeModel.findByIdAndUpdate(debts2._id, { status: true }, { new: true }));
-            }
-            yield debtsType_model_1.DebtTypeModel.create({ name, status: true });
-            return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', yield debtsType_model_1.DebtTypeModel.find({ status: true }));
+            yield debtsType_model_1.DebtTypeModel.create({ name, side });
+            return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', yield debtsType_model_1.DebtTypeModel.find());
         }
         catch (error) {
             if (error instanceof Error) {
@@ -58,8 +54,8 @@ function SaveDebtsType(req, res) {
 function deleteDebtsType(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield debtsType_model_1.DebtTypeModel.findByIdAndUpdate(req.params.id, { status: false }, { new: true });
-            return (0, send_res_1.sendRes)(res, 200, true, 'Operación Eliminada Exitosamente', yield debtsType_model_1.DebtTypeModel.find({ status: true }));
+            yield debtsType_model_1.DebtTypeModel.deleteOne({ _id: req.params.id });
+            return (0, send_res_1.sendRes)(res, 200, true, 'Operación Eliminada Exitosamente', yield debtsType_model_1.DebtTypeModel.find());
         }
         catch (error) {
             if (error instanceof Error) {
