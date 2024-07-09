@@ -10,7 +10,7 @@ export async function checkAuth(req: CustomRequest, res: Response, next: NextFun
 
     const token: string = req.headers['access-token'] as string;
 
-    if (!token) return sendRes(res, 500, false, 'No hay token en la peticion', '');
+    if (!token) return sendRes(res, 200, false, 'No hay token en la peticion', '');
 
     const { username, id, entity } = jwt.verify(token, (Environment.JWT_KEY_APP || '')
       ) as { id: string, username: string, entity: string };
@@ -20,7 +20,7 @@ export async function checkAuth(req: CustomRequest, res: Response, next: NextFun
     return next();
 
   } catch (error) {
-    return sendRes(res, 500, false, 'Problema con el token de acceso', error);
+    return sendRes(res, 200, false, 'Problema con el token de acceso', error);
   }
 }
 

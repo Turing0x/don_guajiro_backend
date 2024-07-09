@@ -20,20 +20,15 @@ async function getAllDebtsType(req: Request, res: Response) {
 async function SaveDebtsType(req: Request, res: Response) {
 
   try {
-    let { name } = req.body;
-    if (!name || name === '') return sendRes(res, 200, false, 'Rellene el campo', '');
+    let { name , side} = req.body;
+    if (!name ) return sendRes(res, 200, false, 'Rellene el campo', '');
     name = name.toLowerCase();
 
-    const debt = await DebtTypeModel.findOne({ name, status: true });
-    const debts2 = await DebtTypeModel.findOne({ name, status: false });
+    const debt = await DebtTypeModel.findOne({ name });
     if (debt) return sendRes(res, 200, false, 'Ya existe este nombre', '');
-    else if (debts2) {
 
-      return sendRes(res, 200, true, 'Datos Obtenidos', await DebtTypeModel.findByIdAndUpdate(debts2._id, { status: true }, { new: true }));
-    }
-
-    await DebtTypeModel.create({ name, status: true })
-    return sendRes(res, 200, true, 'Datos Obtenidos', await DebtTypeModel.find({ status: true }));
+    await DebtTypeModel.create({ name, side })
+    return sendRes(res, 200, true, 'Datos Obtenidos', await DebtTypeModel.find());
   } catch (error) {
     if (error instanceof Error) {
       return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message);
