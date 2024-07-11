@@ -8,6 +8,7 @@ const router = Router()
 router
 
   .get('/', checkAuth, SalesControllers.getAllSales)
+  .get('/range', checkAuth, SalesControllers.getSalesByRange)
 
   .get('/:id', checkAuth, SalesControllers.getSalesById)
   

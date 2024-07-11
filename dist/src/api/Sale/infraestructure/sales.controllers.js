@@ -30,6 +30,28 @@ function getAllSales(req, res) {
         }
     });
 }
+function getSalesByRange(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { startDate, endDate, entity } = req.query;
+            let sales = yield sales_model_1.SalesModel.find({ entity })
+                .lean();
+            sales = sales.filter(sale => {
+                const date = new Date(sale.date);
+                return date >= new Date(startDate) && date <= new Date(endDate);
+            });
+            return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', sales);
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error.message);
+            }
+            else {
+                return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
+            }
+        }
+    });
+}
 function getSalesById(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -63,7 +85,6 @@ function saveSale(req, res) {
             return (0, send_res_1.sendRes)(res, 200, true, 'Venta Registrada Exitosamente', '');
         }
         catch (error) {
-            console.log('error', error);
             return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', error);
         }
     });
@@ -93,8 +114,9 @@ function deleteSale(req, res) {
     });
 }
 exports.SalesControllers = {
-    getAllSales,
+    getSalesByRange,
     getSalesById,
+    getAllSales,
     saveSale,
     deleteSale
 };

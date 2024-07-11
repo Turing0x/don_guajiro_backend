@@ -4,7 +4,6 @@ import { sendRes } from '../../../helpers/send.res';
 import { SalesModel } from '../models/sales.model';
 import { Sale } from '../interface/sales.interface';
 import { ProductModel } from '../../Product/domain/product.models';
-import { Types } from 'mongoose';
 
 async function getAllSales(req: Request, res: Response) {
 
@@ -14,6 +13,31 @@ async function getAllSales(req: Request, res: Response) {
     const sales = await SalesModel.find(
       { $and: [{ date }, { entity }] }
     ).lean();
+
+    return sendRes(res, 200, true, 'Datos Obtenidos', sales);
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return sendRes(res, 200, false, 'Ha ocurrido algo grave', error.message);
+    } else {
+      return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
+    }
+  }
+
+}
+
+async function getSalesByRange(req: Request, res: Response) {
+
+  try {
+    const { startDate, endDate, entity } = req.query;
+
+    let sales = await SalesModel.find({ entity })
+      .lean();
+
+    sales = sales.filter(sale => {
+      const date = new Date(sale.date as string);
+      return date >= new Date(startDate as string) && date <= new Date(endDate as string);
+    });
 
     return sendRes(res, 200, true, 'Datos Obtenidos', sales);
 
@@ -70,7 +94,6 @@ async function saveSale(req: Request, res: Response) {
     return sendRes(res, 200, true, 'Venta Registrada Exitosamente', '');
 
   } catch (error) {
-    console.log('error', error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', error);
   }
 
@@ -107,8 +130,9 @@ async function deleteSale(req: Request, res: Response) {
 }
 
 export const SalesControllers = {
-  getAllSales,
+  getSalesByRange,
   getSalesById,
+  getAllSales,
   saveSale, 
   deleteSale
 }

@@ -140,7 +140,6 @@ async function sign(req: Request, res: Response) {
     });
     
   } catch (error) { 
-    console.log('error', error);
     return sendRes(res, 200, false, 'Ha ocurrido algo grave', ''); }
 
 }
@@ -248,8 +247,35 @@ async function changePassword(req: Request, res: Response) {
   }
 };
 
+async function resetPassword(req: Request, res: Response) {
+  try {
+
+    const existingUser = await UserModel.findOne({
+      _id: req.query.userId
+    }).select('password');
+
+    const newPass = await bcrypt.hash('0000', 10);
+
+    UserModel.updateOne({ _id: existingUser?.id }, { $set: { password: newPass } })
+      .then(() => {
+        return sendRes(res, 200, true, 'La clave de acceso ha sido reestablecida correctamente', '');
+      })
+      .catch((err) => {
+        return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', err.message);
+      });
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', error.message);
+    } else {
+      return sendRes(res, 200, false, 'Error al cambiar su clave de acceso', '');
+    }
+  }
+};
+
 export const UsersControllers = {
   changePassword,
+  resetPassword,
   getAllSeller,
   getUsersById,
   changeActive,

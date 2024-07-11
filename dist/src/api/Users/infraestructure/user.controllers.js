@@ -127,7 +127,6 @@ function sign(req, res) {
             });
         }
         catch (error) {
-            console.log('error', error);
             return (0, send_res_1.sendRes)(res, 200, false, 'Ha ocurrido algo grave', '');
         }
     });
@@ -220,8 +219,35 @@ function changePassword(req, res) {
     });
 }
 ;
+function resetPassword(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const existingUser = yield user_model_1.UserModel.findOne({
+                _id: req.query.userId
+            }).select('password');
+            const newPass = yield bcrypt_1.default.hash('0000', 10);
+            user_model_1.UserModel.updateOne({ _id: existingUser === null || existingUser === void 0 ? void 0 : existingUser.id }, { $set: { password: newPass } })
+                .then(() => {
+                return (0, send_res_1.sendRes)(res, 200, true, 'La clave de acceso ha sido reestablecida correctamente', '');
+            })
+                .catch((err) => {
+                return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', err.message);
+            });
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', error.message);
+            }
+            else {
+                return (0, send_res_1.sendRes)(res, 200, false, 'Error al cambiar su clave de acceso', '');
+            }
+        }
+    });
+}
+;
 exports.UsersControllers = {
     changePassword,
+    resetPassword,
     getAllSeller,
     getUsersById,
     changeActive,

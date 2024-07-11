@@ -7,6 +7,7 @@ const checkAuth_1 = require("../../../helpers/checkAuth");
 const router = (0, express_1.Router)();
 router
     .get('/', checkAuth_1.checkAuth, sales_controllers_1.SalesControllers.getAllSales)
+    .get('/range', checkAuth_1.checkAuth, sales_controllers_1.SalesControllers.getSalesByRange)
     .get('/:id', checkAuth_1.checkAuth, sales_controllers_1.SalesControllers.getSalesById)
     .post('/', checkAuth_1.checkAuth, sales_controllers_1.SalesControllers.saveSale)
     .delete('/:id', checkAuth_1.checkAuth, sales_controllers_1.SalesControllers.deleteSale);
