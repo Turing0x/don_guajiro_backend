@@ -27,16 +27,20 @@ async function getAllSales(req: Request, res: Response) {
 }
 
 async function getSalesByRange(req: Request, res: Response) {
-
   try {
     const { startDate, endDate, entity } = req.query;
 
     let sales = await SalesModel.find({ entity })
       .lean();
 
+    const parseDate = (dateString: string) => {
+      const [day, month, year] = dateString.split('/').map(Number);
+      return new Date(year, month - 1, day);
+    };
+
     sales = sales.filter(sale => {
-      const date = new Date(sale.date as string);
-      return date >= new Date(startDate as string) && date <= new Date(endDate as string);
+      const date = parseDate(sale.date as string);
+      return date >= parseDate(startDate as string) && date <= parseDate(endDate as string);
     });
 
     return sendRes(res, 200, true, 'Datos Obtenidos', sales);
@@ -48,7 +52,6 @@ async function getSalesByRange(req: Request, res: Response) {
       return sendRes(res, 200, false, 'Ha ocurrido algo grave', '');
     }
   }
-
 }
 
 async function getSalesById(req: Request, res: Response) {
