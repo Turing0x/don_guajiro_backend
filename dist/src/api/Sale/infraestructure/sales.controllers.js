@@ -36,9 +36,13 @@ function getSalesByRange(req, res) {
             const { startDate, endDate, entity } = req.query;
             let sales = yield sales_model_1.SalesModel.find({ entity })
                 .lean();
+            const parseDate = (dateString) => {
+                const [day, month, year] = dateString.split('/').map(Number);
+                return new Date(year, month - 1, day);
+            };
             sales = sales.filter(sale => {
-                const date = new Date(sale.date);
-                return date >= new Date(startDate) && date <= new Date(endDate);
+                const date = parseDate(sale.date);
+                return date >= parseDate(startDate) && date <= parseDate(endDate);
             });
             return (0, send_res_1.sendRes)(res, 200, true, 'Datos Obtenidos', sales);
         }
