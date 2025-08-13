@@ -1,25 +1,25 @@
-import { Router } from "express"
+import { Router } from "express";
 
-import { UsersControllers } from '../infraestructure/user.controllers';
+import { UsersControllers } from "../infraestructure/user.controllers";
 import { checkAuth } from "../../../helpers/checkAuth";
 
-const router = Router()
+const router = Router();
 
 router
 
-  .get('/', checkAuth, UsersControllers.getAllUsers)
-  .get('/sellers', checkAuth, UsersControllers.getAllSeller)
+  .get("/", checkAuth, UsersControllers.getAllUsers)
+  .get("/sellers", checkAuth, UsersControllers.getAllSeller)
 
-  .get('/:id', checkAuth, UsersControllers.getUsersById)
+  .get("/:id", checkAuth, UsersControllers.getUsersById)
 
-  .post('/', checkAuth, UsersControllers.saveUser)
-  .post('/signIn', UsersControllers.sign)
-  .post('/checkToken',  UsersControllers.tokenVerify)
-  .post('/changePassword', checkAuth, UsersControllers.changePassword)
-  .post('/resetpass', checkAuth, UsersControllers.resetPassword)
+  .post("/", checkAuth, UsersControllers.saveUser)
+  .post("/signIn", UsersControllers.sign)
+  .post("/checkToken", UsersControllers.tokenVerify)
+  .post("/changePassword", checkAuth, UsersControllers.changePassword)
+  .post("/resetpass", checkAuth, UsersControllers.resetPassword)
 
-  .put('/:id/:enable', checkAuth, UsersControllers.changeActive)
+  .put("/:id/:enable", checkAuth, UsersControllers.changeActive)
 
-  .delete('/:id', checkAuth, UsersControllers.deleteUser)
+  .delete("/:id", checkAuth, UsersControllers.deleteUser);
 
-export const UsersRouter = router
+export const UsersRouter = router;
